@@ -1,15 +1,15 @@
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/auth";
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
 
 const config = {
-  apiKey: "AIzaSyA6BwmS1cuGqThIVdZVlZANaNZP05I08UM",
-  authDomain: "crwn-db-b8f78.firebaseapp.com",
-  databaseURL: "https://crwn-db-b8f78.firebaseio.com",
-  projectId: "crwn-db-b8f78",
-  storageBucket: "crwn-db-b8f78.appspot.com",
-  messagingSenderId: "753117079018",
-  appId: "1:753117079018:web:0dfa9656c30776b16a7e93"
+  apiKey: 'AIzaSyA6BwmS1cuGqThIVdZVlZANaNZP05I08UM',
+  authDomain: 'crwn-db-b8f78.firebaseapp.com',
+  databaseURL: 'https://crwn-db-b8f78.firebaseio.com',
+  projectId: 'crwn-db-b8f78',
+  storageBucket: 'crwn-db-b8f78.appspot.com',
+  messagingSenderId: '753117079018',
+  appId: '1:753117079018:web:0dfa9656c30776b16a7e93'
 };
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
@@ -30,10 +30,25 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         ...additionalData
       });
     } catch (error) {
-      console.log("error creating user", error);
+      console.log('error creating user', error);
     }
   }
   return userRef;
+};
+
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const collectionRef = firestore.collection(collectionKey);
+
+  const batch = firestore.batch();
+  objectsToAdd.forEach(obj => {
+    const newDocRef = collectionRef.doc();
+    batch.set(newDocRef, obj);
+  });
+
+  return await batch.commit();
 };
 
 firebase.initializeApp(config);
@@ -42,7 +57,7 @@ export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
 const provider = new firebase.auth.GoogleAuthProvider();
-provider.setCustomParameters({ prompt: "select_account" });
+provider.setCustomParameters({ prompt: 'select_account' });
 export const signInWithGoogle = () => auth.signInWithPopup(provider);
 
 export default firebase;
