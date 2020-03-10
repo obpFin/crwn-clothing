@@ -1,4 +1,4 @@
-import React, { use } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 import '../form-input/form-input.component';
@@ -11,7 +11,6 @@ import {
   googleSignInStart,
   emailSignInStart
 } from '../../redux/user/user.actions';
-import { useState } from 'react';
 
 const SignIn = ({ emailSignInStart, googleSignInStart }) => {
   const [userCredentials, setCredentials] = useState({
@@ -30,7 +29,7 @@ const SignIn = ({ emailSignInStart, googleSignInStart }) => {
     const { value, name } = event.target;
     setCredentials({ ...userCredentials, [name]: value });
   };
-  
+
   return (
     <div className='sign-in'>
       <h2>I already have an account</h2>
